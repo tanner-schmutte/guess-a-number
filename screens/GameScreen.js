@@ -48,7 +48,7 @@ const GameScreen = (props) => {
         }
 
         const nextNumber = generateRandomBetween(
-            currentLow.current,
+            currentLow.current + 1,
             currentHigh.current,
             currentGuess
         );
