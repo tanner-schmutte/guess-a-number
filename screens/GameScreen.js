@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
@@ -20,13 +20,46 @@ const GameScreen = (props) => {
         generateRandomBetween(1, 100, props.userChoice)
     );
 
+    const currentLow = useRef(1);
+    const currentHigh = useRef(100);
+
+    const nextGuessHandler = (direction) => {
+        if (
+            (direction === 'lower' && currentGuess < props.userChoice) ||
+            (direction === 'higher' && currentGuess > props.userChoice)
+        ) {
+            Alert.alert("Don't be bullshittin...");
+            return;
+        }
+        if (direction === 'lower') {
+            currentHigh.current = currentGuess;
+        }
+        if (direction === 'higher') {
+            currentLow.current = currentGuess;
+        }
+
+        const nextNumber = generateRandomBetween(
+            currentLow.current,
+            currentHigh.current,
+            currentGuess
+        );
+
+        setCurrentGuess(nextNumber);
+    };
+
     return (
         <View style={styles.screen}>
             <Text>Opponent's Guess</Text>
             <NumberContainer>{currentGuess}</NumberContainer>
             <Card style={styles.buttonContainer}>
-                <Button title="LOWER" onPress={() => {}} />
-                <Button title="HIGHER" onPress={() => {}} />
+                <Button
+                    title="LOWER"
+                    onPress={nextGuessHandler.bind(this, 'lower')}
+                />
+                <Button
+                    title="HIGHER"
+                    onPress={nextGuessHandler.bind(this, 'higher')}
+                />
             </Card>
         </View>
     );
@@ -44,7 +77,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 300,
         maxWidth: '80%',
-    }
+    },
 });
 
 export default GameScreen;
