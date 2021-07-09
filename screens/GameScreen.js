@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import TitleText from '../components/TitleText';
+import MainButton from '../components/MainButton';
 
 const generateRandomBetween = (min, max, exclude) => {
     min = Math.ceil(min);
@@ -63,14 +65,13 @@ const GameScreen = (props) => {
             <TitleText>Opponent's Guess</TitleText>
             <NumberContainer>{currentGuess}</NumberContainer>
             <Card style={styles.buttonContainer}>
-                <Button
-                    title="LOWER"
-                    onPress={nextGuessHandler.bind(this, 'lower')}
-                />
-                <Button
-                    title="HIGHER"
-                    onPress={nextGuessHandler.bind(this, 'higher')}
-                />
+                <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                    <AntDesign name="caretdown" size={25} color="white" />
+                </MainButton>
+
+                <MainButton onPress={nextGuessHandler.bind(this, 'higher')}>
+                    <AntDesign name="caretup" size={25} color="white" />
+                </MainButton>
             </Card>
         </View>
     );
