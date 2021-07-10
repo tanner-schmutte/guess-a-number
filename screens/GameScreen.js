@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import TitleText from '../components/TitleText';
+import BodyText from '../components/BodyText';
 import MainButton from '../components/MainButton';
 
 const generateRandomBetween = (min, max, exclude) => {
@@ -17,6 +18,13 @@ const generateRandomBetween = (min, max, exclude) => {
         return RandNum;
     }
 };
+
+const renderListItem = (value, roundNumber) => (
+    <View key={value} style={styles.listItem}>
+        <BodyText>#{roundNumber}</BodyText>
+        <BodyText>{value}</BodyText>
+    </View>
+);
 
 const GameScreen = (props) => {
     const initialGuess = generateRandomBetween(1, 100, props.userChoice);
@@ -72,13 +80,13 @@ const GameScreen = (props) => {
                     <AntDesign name="caretup" size={25} color="white" />
                 </MainButton>
             </Card>
-            <ScrollView>
-                {pastGuesses.map((guess) => (
-                    <View key={guess}>
-                        <Text>{guess}</Text>
-                    </View>
-                ))}
-            </ScrollView>
+            <View style={styles.listContainer}>
+                <ScrollView contentContainerStyle={styles.list}>
+                    {pastGuesses.map((guess, index) =>
+                        renderListItem(guess, pastGuesses.length - index)
+                    )}
+                </ScrollView>
+            </View>
         </View>
     );
 };
@@ -95,6 +103,25 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 300,
         maxWidth: '80%',
+    },
+    listContainer: {
+        flex: 1,
+        width: '80%',
+    },
+    list: {
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    listItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderColor: '#ccc',
+        borderWidth: 1,
+        padding: 15,
+        marginVertical: 10,
+        backgroundColor: 'white',
+        width: '60%',
     },
 });
 
